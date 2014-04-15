@@ -1,4 +1,3 @@
-
 (function(window, $){
     var CMIS;
 	
@@ -29,7 +28,7 @@
 		this._entries_cache = null;
 
 		_getPropertiesNode(this.xmlNode).children().each(function(i, node) {
-			that.properties[$(node).attr("propertyDefinitionId")] = $(node).find("[nodeName=cmis:value]").text();
+			that.properties[$(node).attr("propertyDefinitionId")] = $(node).find("cmis\\:value, value").text();
 		});
 		
 		if (this.getProperty("cmis:objectId")) {
@@ -161,13 +160,13 @@
 		/** The link to collections indexed by collection type. */
 		this.collections = {};
 		this.xmlNode.children("collection").each(function(i, col) {
-		    that.collections[$(col).find("[nodeName=cmisra:collectionType]").eq(0).text()] = $(col).attr("href");
+		    that.collections[$(col).find("cmisra\\:collectionType, collectionType").eq(0).text()] = $(col).attr("href");
 		});
 	};
     
     /** The name of the vendor of this workspace */
     CMIS.Node.prototype.getVendorName = function() {
-        return this.xmlNode.find("[nodeName=cmis:vendorName]").text()    
+        return this.xmlNode.find("cmis\\:vendorName, vendorName").text()    
     }
 
 	/** Get the links for the Workspace
@@ -214,7 +213,7 @@
 		// this doesn't work due to the namespace, so we use another way arround
 		// var props = node.children("cmisra\\:object > cmis\\:properties");
 		var res = null;
-		propsNodes = $(node).find("[nodeName=cmis:properties]").each(function(i, propsNode) {
+		propsNodes = $(node).find("cmis\\:properties, properties").each(function(i, propsNode) {
 			if ($(propsNode).parent().parent()[0] === $(node)[0]) {
 				res = $(propsNode);
 				return false;
